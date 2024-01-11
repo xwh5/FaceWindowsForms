@@ -11,11 +11,11 @@ namespace FaceWindowsForms.FaceServices.Dto
         /// <summary>
         /// 是否人脸
         /// </summary>
-        public float Score { get; set; }
+        public double Score { get; set; }
 
-        public readonly int x;
-        public readonly int y;
-        public readonly int width;
-        public readonly int height;
+        public int x { get; set; }
+        public int y { get; set; }
+        public int width { get; set; }
+        public int height { get; set; }
     }
 }
