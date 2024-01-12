@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using AForge.Video.DirectShow;
-using FaceWindowsForms.FaceServices;
+using Face.ApplicationService.FaceService;
 using FaceWindowsForms.Utils;
+using SkiaSharp;
 
 namespace FaceWindowsForms
 {
@@ -37,7 +32,10 @@ namespace FaceWindowsForms
         /// <summary>
         /// 
         /// </summary>
-        private string provideKey = "FaceRecognitionDotNet";
+        //private string provideKey = "FaceRecognitionDotNet";
+        //private string provideKey = "ViewFaceCode";
+        private string provideKey = "ArcFace";
+        
         public Form1()
         {
             InitializeComponent();
@@ -158,7 +156,7 @@ namespace FaceWindowsForms
         private void pictureBoxSelected_LoadCompleted(object sender, AsyncCompletedEventArgs e)
         {
             logBox.Text = null;
-            var faceInfo = faceService.FaceDetector(new Bitmap(pictureBoxSelected.Image), out long ts);
+            var faceInfo = faceService.FaceDetector(pictureBoxSelected.Image, out long ts);
             if (faceInfo.Count <= 0)
             {
                 pictureBoxSelected.Image = null;
