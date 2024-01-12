@@ -44,6 +44,7 @@ namespace Face.Sdk.ArcFace.Implementations
                 using (var imageInfo = await _processor.VerifyAsync(image))
                 {
                     engine = GetEngine(mode);
+                    var result = await process(engine, imageInfo);
                     return (await process(engine, imageInfo)).Cast<TK>();
                 }
 

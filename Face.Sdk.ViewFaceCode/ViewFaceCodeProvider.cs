@@ -14,7 +14,7 @@ namespace Face.Sdk.ViewFaceCodeSdk
 {
     public class ViewFaceCodeProvider : IFaceProvider
     {
-        public bool FaceCompare(Bitmap img1, Bitmap img2)
+        public bool FaceCompare(Image img1, Image img2)
         {
             FaceDetector faceDetector = null;
             FaceLandmarker faceMark = null;
@@ -47,7 +47,7 @@ namespace Face.Sdk.ViewFaceCodeSdk
             }
         }
 
-        public List<FaceDetectorDto> FaceDetector(Image image)
+        public List<FaceDetectorDto> FaceDetector(System.Drawing.Image image)
         {
             using (FaceDetector faceDetector = new FaceDetector())
             {

@@ -14,29 +14,49 @@ namespace Face.Sdk.ArcFace.Utils
         /// <param name="engine">引擎Handle</param>
         /// <param name="imageInfo">图像信息</param>
         /// <returns>人脸检测结果</returns>
-        public static async Task<OperationResult<AsfMultiFaceInfo>> DetectFaceAsync(IntPtr engine,
-            ImageInfo imageInfo) =>
-            await Task.Run(() =>
+        //public static async Task<OperationResult<AsfMultiFaceInfo>> DetectFaceAsync(IntPtr engine,
+        //    ImageInfo imageInfo) =>
+        //    await Task.Run(() =>
+        //    {
+        //        var pointer = IntPtr.Zero;
+        //        try
+        //        {
+        //            pointer = Marshal.AllocHGlobal(Marshal.SizeOf<AsfMultiFaceInfo>());
+        //            var code = AsfHelper.ASFDetectFaces(engine, imageInfo.Width, imageInfo.Height, imageInfo.Format,
+        //                imageInfo.ImgData, pointer);
+        //            if (code != 0)
+        //                return new OperationResult<AsfMultiFaceInfo>(code);
+        //            var multiFaceInfo = Marshal.PtrToStructure<AsfMultiFaceInfo>(pointer);
+        //            return new OperationResult<AsfMultiFaceInfo>(multiFaceInfo);
+        //        }
+        //        finally
+        //        {
+        //            // if (imageInfo != null)
+        //            //     Marshal.FreeHGlobal(imageInfo.ImgData);
+        //            if (pointer != IntPtr.Zero)
+        //                Marshal.FreeHGlobal(pointer);
+        //        }
+        //    });
+
+        public static async Task<OperationResult<AsfMultiFaceInfo>> DetectFaceAsync(IntPtr engine, ImageInfo imageInfo)
+        {
+            var pointer = IntPtr.Zero;
+            try
             {
-                var pointer = IntPtr.Zero;
-                try
-                {
-                    pointer = Marshal.AllocHGlobal(Marshal.SizeOf<AsfMultiFaceInfo>());
-                    var code = AsfHelper.ASFDetectFaces(engine, imageInfo.Width, imageInfo.Height, imageInfo.Format,
-                        imageInfo.ImgData, pointer);
-                    if (code != 0)
-                        return new OperationResult<AsfMultiFaceInfo>(code);
-                    var multiFaceInfo = Marshal.PtrToStructure<AsfMultiFaceInfo>(pointer);
-                    return new OperationResult<AsfMultiFaceInfo>(multiFaceInfo);
-                }
-                finally
-                {
-                    // if (imageInfo != null)
-                    //     Marshal.FreeHGlobal(imageInfo.ImgData);
-                    if (pointer != IntPtr.Zero)
-                        Marshal.FreeHGlobal(pointer);
-                }
-            });
+                pointer = Marshal.AllocHGlobal(Marshal.SizeOf<AsfMultiFaceInfo>());
+                var code = AsfHelper.ASFDetectFaces(engine, imageInfo.Width, imageInfo.Height, imageInfo.Format,
+                    imageInfo.ImgData, pointer);
+                if (code != 0)
+                    return new OperationResult<AsfMultiFaceInfo>(code);
+                var multiFaceInfo = Marshal.PtrToStructure<AsfMultiFaceInfo>(pointer);
+                return new OperationResult<AsfMultiFaceInfo>(multiFaceInfo);
+            }
+            finally
+            {
+                if (pointer != IntPtr.Zero)
+                    Marshal.FreeHGlobal(pointer);
+            }
+        }
 
         /// <summary>
         /// 提取人脸特征
@@ -44,53 +64,98 @@ namespace Face.Sdk.ArcFace.Utils
         /// <param name="engine">引擎Handle</param>
         /// <param name="imageInfo">图像信息</param>
         /// <returns>保存人脸特征结构体指针</returns>
-        public static async Task<OperationResult<IEnumerable<byte[]>>>
-            ExtractFeatureAsync(IntPtr engine, ImageInfo imageInfo) =>
-            await Task.Run(async () =>
+        //public static async Task<OperationResult<IEnumerable<byte[]>>>
+        //    ExtractFeatureAsync(IntPtr engine, ImageInfo imageInfo) =>
+        //    await Task.Run(async () =>
+        //    {
+        //        var pSingleFaceInfo = IntPtr.Zero;
+        //        var pFaceFeature = IntPtr.Zero;
+        //        try
+        //        {
+        //            var asfFaces = await DetectFaceAsync(engine, imageInfo);
+        //            if (asfFaces.Code != 0)
+        //                return new OperationResult<IEnumerable<byte[]>>(asfFaces.Code);
+
+        //            var faces = asfFaces.Data.Cast();
+        //            if (faces.FaceNum <= 0)
+        //                return new OperationResult<IEnumerable<byte[]>>(null);
+
+        //            var features = new byte[faces.FaceNum][];
+        //            for (var i = 0; i < faces.FaceNum; i++)
+        //            {
+        //                var singleFaceInfo = faces.Faces[i];
+        //                pSingleFaceInfo = Marshal.AllocHGlobal(Marshal.SizeOf<SingleFaceInfo>());
+        //                Marshal.StructureToPtr(singleFaceInfo, pSingleFaceInfo, false);
+
+        //                pFaceFeature = Marshal.AllocHGlobal(Marshal.SizeOf<AsfFaceFeature>());
+        //                var code = AsfHelper.ASFFaceFeatureExtract(engine, imageInfo.Width, imageInfo.Height,
+        //                    imageInfo.Format, imageInfo.ImgData, pSingleFaceInfo, pFaceFeature);
+        //                if (code != 0)
+        //                    return new OperationResult<IEnumerable<byte[]>>(code);
+
+        //                var faceFeature = Marshal.PtrToStructure<AsfFaceFeature>(pFaceFeature);
+        //                var feature = new byte[faceFeature.FeatureSize];
+        //                Marshal.Copy(faceFeature.Feature, feature, 0, faceFeature.FeatureSize);
+        //                features[i] = feature;
+        //            }
+
+        //            return new OperationResult<IEnumerable<byte[]>>(features);
+        //        }
+        //        finally
+        //        {
+        //            // if (imageInfo != null)
+        //            //     Marshal.FreeHGlobal(imageInfo.ImgData);
+        //            if (pSingleFaceInfo != IntPtr.Zero)
+        //                Marshal.FreeHGlobal(pSingleFaceInfo);
+        //            if (pFaceFeature != IntPtr.Zero)
+        //                Marshal.FreeHGlobal(pFaceFeature);
+        //        }
+        //    });
+        public static async Task<OperationResult<IEnumerable<byte[]>>> ExtractFeatureAsync(IntPtr engine, ImageInfo imageInfo)
+        {
+            var pSingleFaceInfo = IntPtr.Zero;
+            var pFaceFeature = IntPtr.Zero;
+            try
             {
-                var pSingleFaceInfo = IntPtr.Zero;
-                var pFaceFeature = IntPtr.Zero;
-                try
+                var asfFaces = await DetectFaceAsync(engine, imageInfo);
+                if (asfFaces.Code != 0)
+                    return new OperationResult<IEnumerable<byte[]>>(asfFaces.Code);
+
+                var faces = asfFaces.Data.Cast();
+                if (faces.FaceNum <= 0)
+                    return new OperationResult<IEnumerable<byte[]>>(null);
+
+                var features = new byte[faces.FaceNum][];
+                for (var i = 0; i < faces.FaceNum; i++)
                 {
-                    var asfFaces = await DetectFaceAsync(engine, imageInfo);
-                    if (asfFaces.Code != 0)
-                        return new OperationResult<IEnumerable<byte[]>>(asfFaces.Code);
+                    var singleFaceInfo = faces.Faces[i];
+                    pSingleFaceInfo = Marshal.AllocHGlobal(Marshal.SizeOf<SingleFaceInfo>());
+                    Marshal.StructureToPtr(singleFaceInfo, pSingleFaceInfo, false);
 
-                    var faces = asfFaces.Data.Cast();
-                    if (faces.FaceNum <= 0)
-                        return new OperationResult<IEnumerable<byte[]>>(null);
+                    pFaceFeature = Marshal.AllocHGlobal(Marshal.SizeOf<AsfFaceFeature>());
+                    var code = AsfHelper.ASFFaceFeatureExtract(engine, imageInfo.Width, imageInfo.Height,
+                        imageInfo.Format, imageInfo.ImgData, pSingleFaceInfo, pFaceFeature);
+                    if (code != 0)
+                        return new OperationResult<IEnumerable<byte[]>>(code);
 
-                    var features = new byte[faces.FaceNum][];
-                    for (var i = 0; i < faces.FaceNum; i++)
-                    {
-                        var singleFaceInfo = faces.Faces[i];
-                        pSingleFaceInfo = Marshal.AllocHGlobal(Marshal.SizeOf<SingleFaceInfo>());
-                        Marshal.StructureToPtr(singleFaceInfo, pSingleFaceInfo, false);
-
-                        pFaceFeature = Marshal.AllocHGlobal(Marshal.SizeOf<AsfFaceFeature>());
-                        var code = AsfHelper.ASFFaceFeatureExtract(engine, imageInfo.Width, imageInfo.Height,
-                            imageInfo.Format, imageInfo.ImgData, pSingleFaceInfo, pFaceFeature);
-                        if (code != 0)
-                            return new OperationResult<IEnumerable<byte[]>>(code);
-
-                        var faceFeature = Marshal.PtrToStructure<AsfFaceFeature>(pFaceFeature);
-                        var feature = new byte[faceFeature.FeatureSize];
-                        Marshal.Copy(faceFeature.Feature, feature, 0, faceFeature.FeatureSize);
-                        features[i] = feature;
-                    }
-
-                    return new OperationResult<IEnumerable<byte[]>>(features);
+                    var faceFeature = Marshal.PtrToStructure<AsfFaceFeature>(pFaceFeature);
+                    var feature = new byte[faceFeature.FeatureSize];
+                    Marshal.Copy(faceFeature.Feature, feature, 0, faceFeature.FeatureSize);
+                    features[i] = feature;
                 }
-                finally
-                {
-                    // if (imageInfo != null)
-                    //     Marshal.FreeHGlobal(imageInfo.ImgData);
-                    if (pSingleFaceInfo != IntPtr.Zero)
-                        Marshal.FreeHGlobal(pSingleFaceInfo);
-                    if (pFaceFeature != IntPtr.Zero)
-                        Marshal.FreeHGlobal(pFaceFeature);
-                }
-            });
+
+                return new OperationResult<IEnumerable<byte[]>>(features);
+            }
+            finally
+            {
+                // if (imageInfo != null)
+                //     Marshal.FreeHGlobal(imageInfo.ImgData);
+                if (pSingleFaceInfo != IntPtr.Zero)
+                    Marshal.FreeHGlobal(pSingleFaceInfo);
+                if (pFaceFeature != IntPtr.Zero)
+                    Marshal.FreeHGlobal(pFaceFeature);
+            }
+        }
 
         /// <summary>
         /// 提取最大人脸特征

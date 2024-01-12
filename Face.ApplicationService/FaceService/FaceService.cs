@@ -51,7 +51,7 @@ namespace Face.ApplicationService.FaceService
             return result;
         }
 
-        public bool FaceCompare(Bitmap img1, Bitmap img2, out long ts)
+        public bool FaceCompare(Image img1, Image img2, out long ts)
         {
             Stopwatch sw = Stopwatch.StartNew();
             var result = faceProvider.FaceCompare(img1, img2);

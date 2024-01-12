@@ -82,9 +82,9 @@ namespace Face.Sdk.ArcFace.Utils
                 throw new Exception($"image is too small than {ASF_MIN_IMAGE_SIZE}B");
 
             image.Position = 0;
-            var format = await processor.GetFormatAsync(image);
-            if (!SupportedImageExtensions.Contains($".{format}"))
-                throw new Exception("unsupported image type.");
+            //var format = await processor.GetFormatAsync(image);
+            //if (!SupportedImageExtensions.Contains($".{format}"))
+            //    throw new Exception("unsupported image type.");
 
             return await ScaleAsync(image, processor);
         }

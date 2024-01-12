@@ -146,7 +146,7 @@ namespace FaceWindowsForms
 
             }
         }
-        private void ComparePicture(Bitmap img1, Bitmap img2)
+        private void ComparePicture(Image img1, Image img2)
         {
             AppendText("开始对比");
             var faceInfo = faceService.FaceCompare(img1, img2, out long ts);
@@ -170,9 +170,7 @@ namespace FaceWindowsForms
 
         private void pictureBoxToRecognize_LoadCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            Bitmap p1 = new Bitmap(pictureBoxSelected.Image);
-            Bitmap p2 = new Bitmap(pictureBoxToRecognize.Image);
-            ComparePicture(p1, p2);
+            ComparePicture(pictureBoxSelected.Image, pictureBoxToRecognize.Image);
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Face.Sdk.ArcFace
                 MinSimilarity = 0.6f
             });
         }
-        public bool FaceCompare(Bitmap img1, Bitmap img2)
+        public bool FaceCompare(Image img1, Image img2)
         {
 
             // 提取人脸特征
@@ -40,13 +40,16 @@ namespace Face.Sdk.ArcFace
 
             // 人脸比对
             var result = arcFace.CompareFaceFeatureAsync(features0.Data.Single(), features1.Data.Single()).Result;
-            return true;
+            return result.Data>0.9f;
         }
 
         public List<FaceDetectorDto> FaceDetector(Image image)
         {
-            var cc = arcFace.DetectFaceAsync(ImageUtil.GetImageStream(image));
-            return new List<FaceDetectorDto> { };
+            var result = arcFace.DetectFaceAsync(ImageUtil.GetImageStream(image)).GetAwaiter().GetResult();
+            return result.Data.Faces.Select(r => new FaceDetectorDto
+            {
+                Score=r.FaceOrient
+            }).ToList();
         }
     }
 }

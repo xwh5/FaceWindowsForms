@@ -29,12 +29,9 @@
         private void InitializeComponent()
         {
             this.logBox = new System.Windows.Forms.TextBox();
-            this.btnRegisterFace = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnSelectImageToRegister = new System.Windows.Forms.Button();
             this.pictureBoxSelected = new System.Windows.Forms.PictureBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.textBoxName = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.pictureBoxToRecognize = new System.Windows.Forms.PictureBox();
             this.btnSelectImageToRecognize = new System.Windows.Forms.Button();
@@ -54,29 +51,16 @@
             this.logBox.Size = new System.Drawing.Size(687, 186);
             this.logBox.TabIndex = 0;
             // 
-            // btnRegisterFace
-            // 
-            this.btnRegisterFace.Location = new System.Drawing.Point(6, 194);
-            this.btnRegisterFace.Name = "btnRegisterFace";
-            this.btnRegisterFace.Size = new System.Drawing.Size(132, 23);
-            this.btnRegisterFace.TabIndex = 1;
-            this.btnRegisterFace.Text = "Register Face";
-            this.btnRegisterFace.UseVisualStyleBackColor = true;
-            this.btnRegisterFace.Click += new System.EventHandler(this.btnRegisterFace_Click);
-            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.btnSelectImageToRegister);
             this.groupBox1.Controls.Add(this.pictureBoxSelected);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.textBoxName);
-            this.groupBox1.Controls.Add(this.btnRegisterFace);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(386, 234);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Face Manage";
+            this.groupBox1.Text = "源图片";
             // 
             // btnSelectImageToRegister
             // 
@@ -84,7 +68,8 @@
             this.btnSelectImageToRegister.Name = "btnSelectImageToRegister";
             this.btnSelectImageToRegister.Size = new System.Drawing.Size(132, 23);
             this.btnSelectImageToRegister.TabIndex = 5;
-            this.btnSelectImageToRegister.Text = "Select Image";
+            this.btnSelectImageToRegister.Text = "选择图片";
+            this.btnSelectImageToRegister.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnSelectImageToRegister.UseVisualStyleBackColor = true;
             this.btnSelectImageToRegister.Click += new System.EventHandler(this.btnSelectImageToRegister_Click);
             // 
@@ -98,22 +83,6 @@
             this.pictureBoxSelected.TabStop = false;
             this.pictureBoxSelected.LoadCompleted += new System.ComponentModel.AsyncCompletedEventHandler(this.pictureBoxSelected_LoadCompleted);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(35, 31);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(29, 12);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Name";
-            // 
-            // textBoxName
-            // 
-            this.textBoxName.Location = new System.Drawing.Point(144, 28);
-            this.textBoxName.Name = "textBoxName";
-            this.textBoxName.Size = new System.Drawing.Size(220, 21);
-            this.textBoxName.TabIndex = 2;
-            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.pictureBoxToRecognize);
@@ -123,7 +92,7 @@
             this.groupBox2.Size = new System.Drawing.Size(282, 234);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Face Recognition";
+            this.groupBox2.Text = "目标图片";
             // 
             // pictureBoxToRecognize
             // 
@@ -141,7 +110,7 @@
             this.btnSelectImageToRecognize.Name = "btnSelectImageToRecognize";
             this.btnSelectImageToRecognize.Size = new System.Drawing.Size(248, 23);
             this.btnSelectImageToRecognize.TabIndex = 1;
-            this.btnSelectImageToRecognize.Text = "Select Image And Recognize";
+            this.btnSelectImageToRecognize.Text = "选择图片-->对比";
             this.btnSelectImageToRecognize.UseVisualStyleBackColor = true;
             this.btnSelectImageToRecognize.Click += new System.EventHandler(this.btnSelectImageToRecognize_Click);
             // 
@@ -156,7 +125,6 @@
             this.Name = "Form1";
             this.Text = "ArcFace Demo";
             this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSelected)).EndInit();
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxToRecognize)).EndInit();
@@ -168,12 +136,9 @@
         #endregion
 
         private System.Windows.Forms.TextBox logBox;
-        private System.Windows.Forms.Button btnRegisterFace;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btnSelectImageToRegister;
         private System.Windows.Forms.PictureBox pictureBoxSelected;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBoxName;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnSelectImageToRecognize;
         private System.Windows.Forms.PictureBox pictureBoxToRecognize;

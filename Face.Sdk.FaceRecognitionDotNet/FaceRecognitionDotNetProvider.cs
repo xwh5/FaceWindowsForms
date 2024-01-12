@@ -26,7 +26,7 @@ namespace Face.Sdk.FaceRecognitionDotNet
             }).ToList();
         }
 
-        public bool FaceCompare(Bitmap img1, Bitmap img2)
+        public bool FaceCompare(System.Drawing.Image img1, System.Drawing.Image img2)
         {
             Image cImg1 = null;
             Image cImg2 = null;
@@ -34,8 +34,8 @@ namespace Face.Sdk.FaceRecognitionDotNet
             FaceEncoding c2 = null;
             try
             {
-                cImg1 = FaceRecognition.LoadImage(img1);
-                cImg2 = FaceRecognition.LoadImage(img2);
+                cImg1 = FaceRecognition.LoadImage(new Bitmap(img1));
+                cImg2 = FaceRecognition.LoadImage(new Bitmap(img2));
 
                 c1 = _FaceRecognition.FaceEncodings(cImg1).First();
                 c2 = _FaceRecognition.FaceEncodings(cImg2).First();

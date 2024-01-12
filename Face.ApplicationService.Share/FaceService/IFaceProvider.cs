@@ -10,6 +10,6 @@ namespace Face.ApplicationService.Share.FaceService
     public interface IFaceProvider
     {
         List<FaceDetectorDto> FaceDetector(Image image);
-        bool FaceCompare(Bitmap img1, Bitmap img2);
+        bool FaceCompare(Image img1, Image img2);
     }
 }

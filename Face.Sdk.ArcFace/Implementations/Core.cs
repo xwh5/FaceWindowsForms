@@ -64,28 +64,51 @@ namespace Face.Sdk.ArcFace.Implementations
             await ProcessImageAsync<IEnumerable<byte[]>, IEnumerable<byte[]>>(image,
                 FaceHelper.ExtractFeatureAsync);
 
-        public async Task<OperationResult<float>> CompareFaceFeatureAsync(byte[] feature1, byte[] feature2) =>
-            await Task.Run(() =>
-            {
-                var engine = IntPtr.Zero;
-                var featureA = IntPtr.Zero;
-                var featureB = IntPtr.Zero;
-                try
-                {
-                    engine = GetEngine(DetectionModeEnum.Image);
-                    featureA = feature1.ToFaceFeature();
-                    featureB = feature2.ToFaceFeature();
+        //public async Task<OperationResult<float>> CompareFaceFeatureAsync(byte[] feature1, byte[] feature2) =>
+        //    await Task.Run(() =>
+        //    {
+        //        var engine = IntPtr.Zero;
+        //        var featureA = IntPtr.Zero;
+        //        var featureB = IntPtr.Zero;
+        //        try
+        //        {
+        //            engine = GetEngine(DetectionModeEnum.Image);
+        //            featureA = feature1.ToFaceFeature();
+        //            featureB = feature2.ToFaceFeature();
 
-                    var similarity = 0f;
-                    var code = AsfHelper.ASFFaceFeatureCompare(engine, featureA, featureB, ref similarity);
-                    return new OperationResult<float>(similarity, code);
-                }
-                finally
-                {
-                    RecycleEngine(engine, DetectionModeEnum.Image);
-                    featureA.DisposeFaceFeature();
-                    featureB.DisposeFaceFeature();
-                }
-            });
+        //            var similarity = 0f;
+        //            var code = AsfHelper.ASFFaceFeatureCompare(engine, featureA, featureB, ref similarity);
+        //            return new OperationResult<float>(similarity, code);
+        //        }
+        //        finally
+        //        {
+        //            RecycleEngine(engine, DetectionModeEnum.Image);
+        //            featureA.DisposeFaceFeature();
+        //            featureB.DisposeFaceFeature();
+        //        }
+        //    });
+
+        public async Task<OperationResult<float>> CompareFaceFeatureAsync(byte[] feature1, byte[] feature2)
+        {
+            var engine = IntPtr.Zero;
+            var featureA = IntPtr.Zero;
+            var featureB = IntPtr.Zero;
+            try
+            {
+                engine = GetEngine(DetectionModeEnum.Image);
+                featureA = feature1.ToFaceFeature();
+                featureB = feature2.ToFaceFeature();
+
+                var similarity = 0f;
+                var code = AsfHelper.ASFFaceFeatureCompare(engine, featureA, featureB, ref similarity);
+                return new OperationResult<float>(similarity, code);
+            }
+            finally
+            {
+                RecycleEngine(engine, DetectionModeEnum.Image);
+                featureA.DisposeFaceFeature();
+                featureB.DisposeFaceFeature();
+            }
+        }
     }
 }

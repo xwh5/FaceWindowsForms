@@ -36,4 +36,8 @@
     </None>
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /y /d &quot;$(ProjectDir)lib.dll&quot; &quot;$(TargetDir)&quot;" />
+  </Target>
+
 </Project>
