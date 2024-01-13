@@ -7,9 +7,10 @@ using System.Text;
 
 namespace Face.ApplicationService.Share.FaceService
 {
-    public interface IFaceProvider
+    public interface IFaceProvider:IDisposable
     {
         List<FaceDetectorDto> FaceDetector(Image image);
         bool FaceCompare(Image img1, Image img2);
+
     }
 }

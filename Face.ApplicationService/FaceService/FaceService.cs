@@ -3,6 +3,7 @@ using Face.ApplicationService.Share.FaceService;
 using Face.ApplicationService.Share.FaceService.Dto;
 using Face.Sdk.ArcFace;
 using Face.Sdk.FaceRecognitionDotNet;
+using Face.Sdk.ViewFaceCode;
 using Face.Sdk.ViewFaceCodeSdk;
 using SkiaSharp;
 using System;
@@ -16,9 +17,29 @@ namespace Face.ApplicationService.FaceService
     public class FaceService
     {
         private IFaceProvider faceProvider;
-        public FaceService(string key)
+        private IBaseFaceLib faceLib;
+        public FaceService(string key,string path)
         {
             InitProvider(key);
+            InitFaceLib(key, path);
+        }
+
+        private void InitFaceLib(string key,string path) {
+            switch (key)
+            {
+                case "ViewFaceCode":
+                    faceLib = new ViewFaceCodeFaceLib(faceProvider);
+                    break;
+                case "FaceRecognitionDotNet":
+                    faceLib = new FaceRecognitionDotNetFaceLib(faceProvider);
+                    break;
+                case "ArcFace":
+                    faceLib = new ArcFaceFaceLib(faceProvider );
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+            faceLib.InitFaceLib(path);
         }
         private void InitProvider(string key)
         {
@@ -58,6 +79,9 @@ namespace Face.ApplicationService.FaceService
             ts = sw.ElapsedMilliseconds;
             sw.Stop();
             return result;
+        }
+        public string GetName(Image img) {
+            return faceLib.Search(img);
         }
     }
 }

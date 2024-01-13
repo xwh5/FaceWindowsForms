@@ -1,4 +1,5 @@
-﻿using Face.ApplicationService.Share.FaceService;
+﻿using Face.ApplicationService.Share;
+using Face.ApplicationService.Share.FaceService;
 using Face.ApplicationService.Share.FaceService.Dto;
 using FaceRecognitionDotNet;
 using System;
@@ -9,24 +10,27 @@ using Image = FaceRecognitionDotNet.Image;
 
 namespace Face.Sdk.FaceRecognitionDotNet
 {
-    public class FaceRecognitionDotNetProvider : IFaceProvider, IDisposable
+    public class FaceRecognitionDotNetProvider : FaceProvider, IFaceFeature<FaceEncoding>
     {
         private FaceRecognition _FaceRecognition;
         public FaceRecognitionDotNetProvider()
         {
             _FaceRecognition = FaceRecognition.Create("Models");
         }
-        public List<FaceDetectorDto> FaceDetector(System.Drawing.Image image)
+        public override List<FaceDetectorDto> FaceDetector(System.Drawing.Image image)
         {
-
             var result = _FaceRecognition.FaceLocations(FaceRecognition.LoadImage(new Bitmap(image)));
             return result.Select(r => new FaceDetectorDto
             {
-                Score = r.Confidence
+                Score = r.Confidence,
+                x = r.Left,
+                y = r.Top,
+                height = r.Right,
+                width = r.Bottom
             }).ToList();
         }
 
-        public bool FaceCompare(System.Drawing.Image img1, System.Drawing.Image img2)
+        public override bool FaceCompare(System.Drawing.Image img1, System.Drawing.Image img2)
         {
             Image cImg1 = null;
             Image cImg2 = null;
@@ -39,7 +43,7 @@ namespace Face.Sdk.FaceRecognitionDotNet
 
                 c1 = _FaceRecognition.FaceEncodings(cImg1).First();
                 c2 = _FaceRecognition.FaceEncodings(cImg2).First();
-                return FaceRecognition.CompareFace(c1, c2, 0.6);
+                return FaceRecognition.CompareFace(c1, c2, 0.4);
             }
             finally
             {
@@ -51,9 +55,27 @@ namespace Face.Sdk.FaceRecognitionDotNet
         }
 
 
-        public void Dispose()
+        public override void Dispose()
         {
             _FaceRecognition.Dispose();
+        }
+
+
+        FaceEncoding IFaceFeature<FaceEncoding>.GetFeature(System.Drawing.Image img1)
+        {
+            using (var i = new Bitmap(img1))
+            {
+                using (var cImg1 = FaceRecognition.LoadImage(i))
+                {
+                    return _FaceRecognition.FaceEncodings(cImg1)?.FirstOrDefault();
+                };
+            }
+
+        }
+
+        public bool Compare(FaceEncoding data, FaceEncoding dest)
+        {
+            return FaceRecognition.CompareFace(data, dest, 0.4);
         }
     }
 }

@@ -2,6 +2,7 @@
 using Face.ApplicationService.Share.FaceService;
 using Face.ApplicationService.Share.FaceService.Dto;
 using Face.Sdk.ArcFace.Implementations;
+using Face.Sdk.ArcFace.Models;
 using Face.Sdk.ArcFace.Processor;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using System.Text;
 
 namespace Face.Sdk.ArcFace
 {
-    public class ArcFaceProvider : IFaceProvider
+    public class ArcFaceProvider : FaceProvider, IFaceFeature<byte[]>
     {
         private IArcFace arcFace;
         public ArcFaceProvider() {
@@ -31,25 +32,60 @@ namespace Face.Sdk.ArcFace
                 MinSimilarity = 0.6f
             });
         }
-        public bool FaceCompare(Image img1, Image img2)
+        public override bool FaceCompare(Image img1, Image img2)
         {
+            using (var i1 = ImageUtil.GetImageStream(img1))
+            {
+                using (var i2 = ImageUtil.GetImageStream(img2))
+                {
+                    // 提取人脸特征
+                    var features0 = arcFace.ExtractFaceFeatureAsync(i1).Result;
+                    var features1 = arcFace.ExtractFaceFeatureAsync(i2).Result;
 
-            // 提取人脸特征
-            var features0 = arcFace.ExtractFaceFeatureAsync(ImageUtil.GetImageStream(img1)).Result;
-            var features1 = arcFace.ExtractFaceFeatureAsync(ImageUtil.GetImageStream(img2)).Result;
+                    // 人脸比对
+                    var result = arcFace.CompareFaceFeatureAsync(features0.Data.Single(), features1.Data.Single()).Result;
+                    return result.Data > 0.9f;
+                }
+            }
 
-            // 人脸比对
-            var result = arcFace.CompareFaceFeatureAsync(features0.Data.Single(), features1.Data.Single()).Result;
-            return result.Data>0.9f;
         }
 
-        public List<FaceDetectorDto> FaceDetector(Image image)
+        public  override List<FaceDetectorDto> FaceDetector(Image image)
         {
-            var result = arcFace.DetectFaceAsync(ImageUtil.GetImageStream(image)).GetAwaiter().GetResult();
-            return result.Data.Faces.Select(r => new FaceDetectorDto
+            using (var img= ImageUtil.GetImageStream(image))
             {
-                Score=r.FaceOrient
-            }).ToList();
+                var result = arcFace.DetectFaceAsync(img).GetAwaiter().GetResult();
+                return result.Data.Faces.Select(r => new FaceDetectorDto
+                {
+                    Score = r.FaceOrient,
+                    height = r.FaceRect.Bottom,
+                    width = r.FaceRect.Left,
+                    x = r.FaceRect.Right-300,
+                    y = r.FaceRect.Top,
+                }).ToList();
+            }
+        }
+
+        public override void Dispose()
+        {
+            arcFace.Dispose();
+        }
+
+
+        public byte[] GetFeature(Image img1)
+        {
+            using (var img= ImageUtil.GetImageStream(img1))
+            {
+                var result = arcFace.ExtractFaceFeatureAsync(img)?.Result;
+                return result?.Data?.FirstOrDefault();
+            }
+
+        }
+
+        public bool Compare(byte[] source, byte[] dest)
+        {
+            var result = arcFace.CompareFaceFeatureAsync(source, dest).Result;
+            return result.Data > 0.9f;
         }
     }
 }

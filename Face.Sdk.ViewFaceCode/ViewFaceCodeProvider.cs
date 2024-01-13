@@ -1,4 +1,5 @@
-﻿using Face.ApplicationService.Share.FaceService;
+﻿using Face.ApplicationService.Share;
+using Face.ApplicationService.Share.FaceService;
 using Face.ApplicationService.Share.FaceService.Dto;
 using SkiaSharp;
 using System;
@@ -12,9 +13,21 @@ using ViewFaceCore.Model;
 
 namespace Face.Sdk.ViewFaceCodeSdk
 {
-    public class ViewFaceCodeProvider : IFaceProvider
+    public class ViewFaceCodeProvider : FaceProvider, IFaceFeature<float[]>
     {
-        public bool FaceCompare(Image img1, Image img2)
+        public bool Compare(float[] data, float[] dest)
+        {
+            using (var faceRecognizer= new FaceRecognizer())
+            {
+                return faceRecognizer.IsSelf(data, dest);
+            }
+        }
+
+        public override void Dispose()
+        {
+        }
+
+        public override bool FaceCompare(Image img1, Image img2)
         {
             FaceDetector faceDetector = null;
             FaceLandmarker faceMark = null;
@@ -26,7 +39,7 @@ namespace Face.Sdk.ViewFaceCodeSdk
                 var face2 = faceDetector.Detect(img2.ToFaceImage());
                 faceMark = new FaceLandmarker();
                 FaceMarkPoint[] points0 = faceMark.Mark(img1, face1[0]);
-                FaceMarkPoint[] points1 = faceMark.Mark(img1, face2[0]);
+                FaceMarkPoint[] points1 = faceMark.Mark(img2, face2[0]);
                 //提取特征值
                 faceRecognizer = new FaceRecognizer();
                 float[] data0 = faceRecognizer.Extract(img1, points0);
@@ -47,7 +60,7 @@ namespace Face.Sdk.ViewFaceCodeSdk
             }
         }
 
-        public List<FaceDetectorDto> FaceDetector(System.Drawing.Image image)
+        public override List<FaceDetectorDto> FaceDetector(System.Drawing.Image image)
         {
             using (FaceDetector faceDetector = new FaceDetector())
             {
@@ -55,7 +68,39 @@ namespace Face.Sdk.ViewFaceCodeSdk
                 return result.Select(r => new FaceDetectorDto
                 {
                     Score = r.Score,
+                    x=r.Location.X,
+                    y=r.Location.Y,
+                    height=r.Location.Height,
+                    width=r.Location.Width,
                 }).ToList();
+            }
+        }
+
+        public float[] GetFeature(Image img1)
+        {
+            FaceDetector faceDetector = null;
+            FaceLandmarker faceMark = null;
+            FaceRecognizer faceRecognizer = null;
+            try
+            {
+                faceDetector = new FaceDetector();
+                var face1 = faceDetector.Detect(img1.ToFaceImage());
+                faceMark = new FaceLandmarker();
+                FaceMarkPoint[] points0 = faceMark.Mark(img1, face1[0]);
+                //提取特征值
+                faceRecognizer = new FaceRecognizer();
+                float[] data0 = faceRecognizer.Extract(img1, points0);
+                return data0;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                faceDetector.Dispose();
+                faceMark.Dispose();
+                faceRecognizer.Dispose();
             }
         }
     }

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -8,6 +8,8 @@
     <PackageReference Include="ViewFaceCore" Version="0.3.8" />
     <PackageReference Include="ViewFaceCore.all_models" Version="6.0.7" />
     <PackageReference Include="ViewFaceCore.Extension.SystemDrawing" Version="0.3.7" />
+    <PackageReference Include="ViewFaceCore.runtime.win.x64" Version="6.0.7" />
+    <PackageReference Include="ViewFaceCore.runtime.win.x86" Version="6.0.7" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
@@ -10,13 +11,9 @@ using SkiaSharp;
 
 namespace FaceWindowsForms
 {
-    public partial class Form1 : Form
+    public partial class FaceComparison : Form
     {
         public static Form form1;
-        /// <summary>
-        /// 视频输入设备信息
-        /// </summary>
-        private FilterInfoCollection filterInfoCollection;
         /// <summary>
         /// 图片最大大小
         /// </summary>
@@ -25,26 +22,30 @@ namespace FaceWindowsForms
         /// 默认打开文件夹路径
         /// </summary>
         private string InitialDirectoryPath = @"D:\Data\WXWork\1688856040371791\Cache\File\2024-01\dir_011_1";
-        /// <summary>
-        /// 人脸识别服务
-        /// </summary>
-        private FaceService faceService;
+
         /// <summary>
         /// 
         /// </summary>
         //private string provideKey = "FaceRecognitionDotNet";
         //private string provideKey = "ViewFaceCode";
-        private string provideKey = "ArcFace";
+
+        private new string[] comboBox1Data = new string[] {
+            "ViewFaceCode","FaceRecognitionDotNet","ArcFace"
+        };
         
-        public Form1()
+        public FaceComparison()
         {
             InitializeComponent();
-            filterInfoCollection = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-            faceService = new FaceService(provideKey);
             form1 = this;
-            AppendText("当前人脸识别组件：" + provideKey);
+            AppendText("当前人脸识别组件：" + FaceGlobal.Key);
+            InitFaceService();
         }
 
+        public void InitFaceService() {
+            logBox.Text = null;
+            AppendText($"当前识别引擎：{FaceGlobal.Key}");
+            //FaceGlobal.CurrentFaceService = new FaceService(FaceGlobal.Key);
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
 
@@ -149,14 +150,14 @@ namespace FaceWindowsForms
         private void ComparePicture(Image img1, Image img2)
         {
             AppendText("开始对比");
-            var faceInfo = faceService.FaceCompare(img1, img2, out long ts);
+            var faceInfo = FaceGlobal.CurrentFaceService.FaceCompare(img1, img2, out long ts);
             AppendText($"是否为同一人脸{faceInfo},耗时：{ts}");
         }
 
         private void pictureBoxSelected_LoadCompleted(object sender, AsyncCompletedEventArgs e)
         {
             logBox.Text = null;
-            var faceInfo = faceService.FaceDetector(pictureBoxSelected.Image, out long ts);
+            var faceInfo = FaceGlobal.CurrentFaceService.FaceDetector(pictureBoxSelected.Image, out long ts);
             if (faceInfo.Count <= 0)
             {
                 pictureBoxSelected.Image = null;
@@ -171,6 +172,12 @@ namespace FaceWindowsForms
         private void pictureBoxToRecognize_LoadCompleted(object sender, AsyncCompletedEventArgs e)
         {
             ComparePicture(pictureBoxSelected.Image, pictureBoxToRecognize.Image);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var name= FaceGlobal.CurrentFaceService.GetName(pictureBoxSelected.Image);
+            textBox1.Text = name;
         }
     }
 }

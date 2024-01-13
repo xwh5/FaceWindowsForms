@@ -14,7 +14,7 @@ namespace Face.Sdk.ArcFace.Utils
         /// <summary>
         /// 图像尺寸上限
         /// </summary>
-        private const long ASF_MAX_IMAGE_SIZE = 10 * 1024 * 1024;
+        private const long ASF_MAX_IMAGE_SIZE = 100 * 1024 * 1024;
 
         /// <summary>
         /// 图像尺寸下线
