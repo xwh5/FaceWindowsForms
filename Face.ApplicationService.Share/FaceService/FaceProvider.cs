@@ -22,10 +22,5 @@ namespace Face.ApplicationService.Share.FaceService
         {
             throw new NotImplementedException();
         }
-
-        public virtual T GetFeature<T>(Image img1)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

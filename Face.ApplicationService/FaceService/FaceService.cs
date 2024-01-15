@@ -3,6 +3,7 @@ using Face.ApplicationService.Share.FaceService;
 using Face.ApplicationService.Share.FaceService.Dto;
 using Face.Sdk.ArcFace;
 using Face.Sdk.FaceRecognitionDotNet;
+using Face.Sdk.OpencvSharpV4;
 using Face.Sdk.ViewFaceCode;
 using Face.Sdk.ViewFaceCodeSdk;
 using SkiaSharp;
@@ -36,6 +37,9 @@ namespace Face.ApplicationService.FaceService
                 case "ArcFace":
                     faceLib = new ArcFaceFaceLib(faceProvider );
                     break;
+                case "Opencv":
+                    faceLib = new OpencvSharpFaceLib(faceProvider);
+                    break;
                 default:
                     throw new NotImplementedException();
             }
@@ -53,6 +57,9 @@ namespace Face.ApplicationService.FaceService
                     break;
                 case "ArcFace":
                     faceProvider = new ArcFaceProvider();
+                    break;
+                case "Opencv":
+                    faceProvider = new OpencvSharpProvider();
                     break;
                 default:
                     throw new NotImplementedException();

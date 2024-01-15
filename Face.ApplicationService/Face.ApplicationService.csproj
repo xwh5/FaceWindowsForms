@@ -8,6 +8,7 @@
     <ProjectReference Include="..\Face.ApplicationService.Share\Face.ApplicationService.Share.csproj" />
     <ProjectReference Include="..\Face.Sdk.ArcFace\Face.Sdk.ArcFace.csproj" />
     <ProjectReference Include="..\Face.Sdk.FaceRecognitionDotNet\Face.Sdk.FaceRecognitionDotNet.csproj" />
+    <ProjectReference Include="..\Face.Sdk.OpencvSharpV4\Face.Sdk.OpencvSharpV4.csproj" />
     <ProjectReference Include="..\Face.Sdk.ViewFaceCode\Face.Sdk.ViewFaceCode.csproj" />
   </ItemGroup>
 

@@ -20,9 +20,12 @@ namespace FaceWindowsForms
         public static FaceService CurrentFaceService;
 
         public static string[] ComboBox1Data = new string[] {
-            "ArcFace","ViewFaceCode","FaceRecognitionDotNet",
+            "ArcFace","Opencv","ViewFaceCode","FaceRecognitionDotNet",
         };
 
-        public static string FaceLibPath = @"D:\Users\xwh73\Downloads\FaceLib";
+        //public static string FaceLibPath = @"D:\Users\xwh73\Downloads\FaceLib";
+
+        public static string FaceLibPath = @"C:\Users\weihao.xia\Downloads\FaceLib";
+        //public static string FaceLibPath = @"D:\Data\WXWork\1688856040371791\Cache\File\2024-01\dir_011_1";
     }
 }

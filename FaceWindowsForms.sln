@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Face.ApplicationService.Sha
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Face.Sdk.FaceRecognitionDotNet", "Face.Sdk.FaceRecognitionDotNet\Face.Sdk.FaceRecognitionDotNet.csproj", "{890F5F5C-627F-40BF-B186-7B4373AA2582}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Face.Sdk.ArcFace", "Face.Sdk.ArcFace\Face.Sdk.ArcFace.csproj", "{2FF60B70-0EAD-4FF0-AEE3-13CF5DED4E6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Face.Sdk.ArcFace", "Face.Sdk.ArcFace\Face.Sdk.ArcFace.csproj", "{2FF60B70-0EAD-4FF0-AEE3-13CF5DED4E6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Face.Sdk.OpencvSharpV4", "Face.Sdk.OpencvSharpV4\Face.Sdk.OpencvSharpV4.csproj", "{A5ABF5F5-10D8-47B7-8510-5A8B09A370E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +73,14 @@ Global
 		{2FF60B70-0EAD-4FF0-AEE3-13CF5DED4E6F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2FF60B70-0EAD-4FF0-AEE3-13CF5DED4E6F}.Release|x64.ActiveCfg = Release|Any CPU
 		{2FF60B70-0EAD-4FF0-AEE3-13CF5DED4E6F}.Release|x64.Build.0 = Release|Any CPU
+		{A5ABF5F5-10D8-47B7-8510-5A8B09A370E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5ABF5F5-10D8-47B7-8510-5A8B09A370E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5ABF5F5-10D8-47B7-8510-5A8B09A370E3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A5ABF5F5-10D8-47B7-8510-5A8B09A370E3}.Debug|x64.Build.0 = Debug|Any CPU
+		{A5ABF5F5-10D8-47B7-8510-5A8B09A370E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5ABF5F5-10D8-47B7-8510-5A8B09A370E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5ABF5F5-10D8-47B7-8510-5A8B09A370E3}.Release|x64.ActiveCfg = Release|Any CPU
+		{A5ABF5F5-10D8-47B7-8510-5A8B09A370E3}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -43,7 +43,7 @@ namespace Face.Sdk.FaceRecognitionDotNet
 
                 c1 = _FaceRecognition.FaceEncodings(cImg1).First();
                 c2 = _FaceRecognition.FaceEncodings(cImg2).First();
-                return FaceRecognition.CompareFace(c1, c2, 0.4);
+                return FaceRecognition.CompareFace(c1, c2, 0.5);
             }
             finally
             {
