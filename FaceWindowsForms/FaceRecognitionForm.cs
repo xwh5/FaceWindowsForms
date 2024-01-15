@@ -153,18 +153,22 @@ namespace FaceWindowsForms
                     }
                 }
 
-                await Task.Delay(30);
+                await Task.Delay(10);
                 SetPic(bitmap);
             }
         }
 
         private void SetPic(Bitmap bitmap)
         {
-            pictureBox1.Invoke(new Action(() =>
+            if (!this.IsDisposed)
             {
-                pictureBox1.Image?.Dispose();
-                pictureBox1.Image = bitmap;
-            }));
+                pictureBox1.Invoke(new Action(() =>
+                {
+                    pictureBox1.Image?.Dispose();
+                    pictureBox1.Image = bitmap;
+                }));
+
+            }
         }
         private void FaceRecognitionForm_FormClosing(object sender, FormClosingEventArgs e)
         {

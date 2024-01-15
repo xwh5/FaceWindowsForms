@@ -15,7 +15,7 @@ using System.Text;
 
 namespace Face.ApplicationService.FaceService
 {
-    public class FaceService
+    public class FaceService:IDisposable
     {
         private IFaceProvider faceProvider;
         private IBaseFaceLib faceLib;
@@ -89,6 +89,11 @@ namespace Face.ApplicationService.FaceService
         }
         public string GetName(Image img) {
             return faceLib.Search(img);
+        }
+
+        public void Dispose()
+        {
+            faceProvider.Dispose();
         }
     }
 }

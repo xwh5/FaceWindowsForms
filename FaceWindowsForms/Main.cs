@@ -33,6 +33,10 @@ namespace FaceWindowsForms
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             FaceGlobal.Key = FaceGlobal.ComboBox1Data[comboBox1.SelectedIndex];
+            if (FaceGlobal.CurrentFaceService !=null)
+            {
+                FaceGlobal.CurrentFaceService.Dispose();
+            }
             FaceGlobal.CurrentFaceService = new FaceService(FaceGlobal.Key,FaceGlobal.FaceLibPath);
         }
 
