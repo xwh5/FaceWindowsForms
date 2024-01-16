@@ -1,9 +1,10 @@
 using Face.ApplicationService.FaceService;
 using FaceAspnetcore.Input;
 using Microsoft.AspNetCore.Mvc;
-using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp;
 using System.Drawing;
+using Image = SixLabors.ImageSharp.Image;
+
 
 namespace FaceAspnetcore
 {
@@ -34,8 +35,23 @@ namespace FaceAspnetcore
             {
                 var arcsoft = new FaceService(input.Type, null,input.IsAction);
 
-                var a= arcsoft.FaceDetector(System.Drawing.Image.FromFile("/wzp3.jpg"),out long ts);
-                return a;
+                using (var img = Image.Load("wzp3.jpg"))
+                {
+                    // 将ImageSharp的Image<Rgba32>保存到内存流中
+                    using var memoryStream = new MemoryStream();
+                    img.SaveAsBmp(memoryStream);
+
+                    // 将内存流重置到起始位置
+                    memoryStream.Position = 0;
+
+                    // 使用System.Drawing的Bitmap从内存流中加载图像
+                    using var bitmap = new Bitmap(memoryStream);
+                    var a = arcsoft.FaceDetector(bitmap, out long ts);
+                    return a;
+                }
+              
+   
+
             });
             app.Run();
         }
