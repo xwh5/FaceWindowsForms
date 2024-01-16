@@ -44,8 +44,15 @@ namespace FaceAspnetcore
                     // 将内存流重置到起始位置
                     memoryStream.Position = 0;
 
-                    // 使用System.Drawing的Bitmap从内存流中加载图像
-                    using var bitmap = new Bitmap(memoryStream);
+                    // 将内存流转换为字节数组
+                    byte[] imageData = memoryStream.ToArray();
+
+                    // 获取图像的宽度和高度
+                    int width = img.Width;
+                    int height = img.Height;
+
+                    // 将内存流重置到起始位置
+                    memoryStream.Position = 0;
                     var a = arcsoft.FaceDetector(bitmap, out long ts);
                     return a;
                 }
