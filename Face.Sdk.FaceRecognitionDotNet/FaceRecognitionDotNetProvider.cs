@@ -43,7 +43,7 @@ namespace Face.Sdk.FaceRecognitionDotNet
 
                 c1 = _FaceRecognition.FaceEncodings(cImg1).First();
                 c2 = _FaceRecognition.FaceEncodings(cImg2).First();
-                return FaceRecognition.CompareFace(c1, c2, 0.5);
+                return FaceRecognition.CompareFace(c1, c2, 0.4);
             }
             finally
             {
@@ -75,7 +75,7 @@ namespace Face.Sdk.FaceRecognitionDotNet
 
         public bool Compare(FaceEncoding data, FaceEncoding dest)
         {
-            return FaceRecognition.CompareFace(data, dest, 0.4);
+            return FaceRecognition.CompareFace(data, dest, 0.5);
         }
     }
 }

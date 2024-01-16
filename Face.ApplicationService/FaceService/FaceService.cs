@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Text;
 
 namespace Face.ApplicationService.FaceService
@@ -43,7 +44,10 @@ namespace Face.ApplicationService.FaceService
                 default:
                     throw new NotImplementedException();
             }
-            faceLib.InitFaceLib(path);
+            if (Directory.Exists(path))
+            {
+                faceLib.InitFaceLib(path);
+            }
         }
         private void InitProvider(string key)
         {
@@ -87,8 +91,12 @@ namespace Face.ApplicationService.FaceService
             sw.Stop();
             return result;
         }
-        public string GetName(Image img) {
-            return faceLib.Search(img);
+        public string GetName(Image img,out long ts) {
+            Stopwatch sw = Stopwatch.StartNew();
+            var result = faceLib.Search(img);
+            ts = sw.ElapsedMilliseconds;
+            sw.Stop();
+            return result;
         }
 
         public void Dispose()

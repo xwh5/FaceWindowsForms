@@ -125,7 +125,7 @@ namespace FaceWindowsForms
                     continue;
                 }
                 var faceInfos = FaceGlobal.CurrentFaceService.FaceDetector(bitmap, out long ts);
-                var name = FaceGlobal.CurrentFaceService.GetName(bitmap);
+                var name = FaceGlobal.CurrentFaceService.GetName(bitmap,out long ts1);
                 using (Graphics g = Graphics.FromImage(bitmap))
                 {
                     if (faceInfos.Any()) // 如果有人脸，在 bitmap 上绘制出人脸的位置信息

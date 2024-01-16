@@ -32,7 +32,7 @@ namespace FaceWindowsForms
         private new string[] comboBox1Data = new string[] {
             "ViewFaceCode","FaceRecognitionDotNet","ArcFace"
         };
-        
+
         public FaceComparison()
         {
             InitializeComponent();
@@ -41,7 +41,8 @@ namespace FaceWindowsForms
             InitFaceService();
         }
 
-        public void InitFaceService() {
+        public void InitFaceService()
+        {
             logBox.Text = null;
             AppendText($"当前识别引擎：{FaceGlobal.Key}");
             //FaceGlobal.CurrentFaceService = new FaceService(FaceGlobal.Key);
@@ -176,8 +177,16 @@ namespace FaceWindowsForms
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var name= FaceGlobal.CurrentFaceService.GetName(pictureBoxSelected.Image);
-            textBox1.Text = name;
+            var name = FaceGlobal.CurrentFaceService.GetName(pictureBoxSelected.Image, out long ts);
+            AppendText($"人脸库查找人脸耗时：{ts}");
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                textBox1.Text = $"为匹配到人脸";
+            }
+            else
+            {
+                textBox1.Text = name;
+            };
         }
     }
 }

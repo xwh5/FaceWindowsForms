@@ -85,12 +85,19 @@ namespace Face.Sdk.ViewFaceCodeSdk
             {
                 faceDetector = new FaceDetector();
                 var face1 = faceDetector.Detect(img1.ToFaceImage());
-                faceMark = new FaceLandmarker();
-                FaceMarkPoint[] points0 = faceMark.Mark(img1, face1[0]);
-                //提取特征值
-                faceRecognizer = new FaceRecognizer();
-                float[] data0 = faceRecognizer.Extract(img1, points0);
-                return data0;
+                if (face1.Length > 0)
+                {
+                    faceMark = new FaceLandmarker();
+                    FaceMarkPoint[] points0 = faceMark.Mark(img1, face1[0]);
+                    //提取特征值
+                    faceRecognizer = new FaceRecognizer();
+                    float[] data0 = faceRecognizer.Extract(img1, points0);
+                    return data0;
+                }
+                else {
+                    return null;
+                }
+  
             }
             catch (Exception)
             {
@@ -99,8 +106,8 @@ namespace Face.Sdk.ViewFaceCodeSdk
             finally
             {
                 faceDetector.Dispose();
-                faceMark.Dispose();
-                faceRecognizer.Dispose();
+                faceMark?.Dispose();
+                faceRecognizer?.Dispose();
             }
         }
     }
