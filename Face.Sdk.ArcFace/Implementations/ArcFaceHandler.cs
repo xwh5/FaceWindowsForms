@@ -13,11 +13,15 @@ namespace Face.Sdk.ArcFace.Implementations
         //{
         //}
 
-        public ArcFaceHandler(IImageProcessor processor, ArcFaceOptions options)
+        public ArcFaceHandler(IImageProcessor processor, ArcFaceOptions options,bool isAction)
         {
             _processor = processor;
             _options = options;
-            OnlineActiveAsync().Wait();
+            if (isAction)
+            {
+
+                OnlineActiveAsync().Wait();
+            }
         }
     }
 }

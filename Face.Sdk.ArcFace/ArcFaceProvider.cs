@@ -10,16 +10,17 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using static System.Collections.Specialized.BitVector32;
 
 namespace Face.Sdk.ArcFace
 {
     public class ArcFaceProvider : FaceProvider, IFaceFeature<byte[]>
     {
         private IArcFace arcFace;
-        public ArcFaceProvider() {
-            Init();
+        public ArcFaceProvider(bool isAction) {
+            Init(isAction);
         }
-        private void Init()
+        private void Init(bool isAction)
         {
             arcFace = new ArcFaceHandler(new ImageProcessor(), new ArcFaceOptions
             {
@@ -30,7 +31,7 @@ namespace Face.Sdk.ArcFace
                     Linux64 = "GMGRHcDPLqKYYPkzRGiUdu35ZB5sxqtszKbixYat9jTU"
                 },
                 MinSimilarity = 0.6f
-            });
+            }, isAction);
         }
         public override bool FaceCompare(Image img1, Image img2)
         {

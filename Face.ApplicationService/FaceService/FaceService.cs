@@ -20,9 +20,9 @@ namespace Face.ApplicationService.FaceService
     {
         private IFaceProvider faceProvider;
         private IBaseFaceLib faceLib;
-        public FaceService(string key,string path)
+        public FaceService(string key,string path,bool isAction=true)
         {
-            InitProvider(key);
+            InitProvider(key, isAction);
             InitFaceLib(key, path);
         }
 
@@ -49,7 +49,7 @@ namespace Face.ApplicationService.FaceService
                 faceLib.InitFaceLib(path);
             }
         }
-        private void InitProvider(string key)
+        private void InitProvider(string key,bool isAction)
         {
             switch (key)
             {
@@ -60,7 +60,7 @@ namespace Face.ApplicationService.FaceService
                     faceProvider = new FaceRecognitionDotNetProvider();
                     break;
                 case "ArcFace":
-                    faceProvider = new ArcFaceProvider();
+                    faceProvider = new ArcFaceProvider(isAction);
                     break;
                 case "Opencv":
                     faceProvider = new OpencvSharpProvider();

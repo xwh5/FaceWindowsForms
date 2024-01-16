@@ -16,6 +16,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Sdks\Linuxx64\libarcsoft_face.so">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Sdks\Linuxx64\libarcsoft_face_engine.so">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Sdks\Winx64\libarcsoft_face.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
