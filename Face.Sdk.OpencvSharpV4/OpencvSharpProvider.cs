@@ -4,6 +4,7 @@ using Face.ApplicationService.Share.FaceService.Dto;
 using OpenCvSharp;
 using OpenCvSharp.Dnn;
 using OpenCvSharp.Face;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -139,6 +140,11 @@ namespace Face.Sdk.OpencvSharpV4
                 image1.Dispose();
                 return null;
             }
+        }
+
+        public Mat GetFeature(SKBitmap img1)
+        {
+            throw new NotImplementedException();
         }
     }
 }

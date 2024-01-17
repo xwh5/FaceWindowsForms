@@ -8,7 +8,7 @@ namespace Face.Sdk.ArcFace
 {
     public class ArcFaceFaceLib : BaseFaceLib<byte[]>
     {
-        public ArcFaceFaceLib(IFaceProvider faceFeature) : base(faceFeature)
+        public ArcFaceFaceLib(IFaceProvider faceFeature,string key) : base(faceFeature,key)
         {
         }
     }

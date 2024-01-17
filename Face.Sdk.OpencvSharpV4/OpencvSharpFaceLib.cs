@@ -8,6 +8,6 @@ namespace Face.Sdk.OpencvSharpV4
 {
     public class OpencvSharpFaceLib : BaseFaceLib<Mat>
     {
-        public OpencvSharpFaceLib(IFaceProvider faceProvider) : base(faceProvider) { }
+        public OpencvSharpFaceLib(IFaceProvider faceProvider,string key) : base(faceProvider,key) { }
     }
 }

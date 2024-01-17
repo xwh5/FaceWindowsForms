@@ -110,5 +110,10 @@ namespace Face.Sdk.ViewFaceCodeSdk
                 faceRecognizer?.Dispose();
             }
         }
+
+        public float[] GetFeature(SKBitmap img1)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

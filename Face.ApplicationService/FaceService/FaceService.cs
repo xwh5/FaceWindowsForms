@@ -10,9 +10,7 @@ using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
-using System.Text;
 
 namespace Face.ApplicationService.FaceService
 {
@@ -30,16 +28,16 @@ namespace Face.ApplicationService.FaceService
             switch (key)
             {
                 case "ViewFaceCode":
-                    faceLib = new ViewFaceCodeFaceLib(faceProvider);
+                    faceLib = new ViewFaceCodeFaceLib(faceProvider,key);
                     break;
                 case "FaceRecognitionDotNet":
-                    faceLib = new FaceRecognitionDotNetFaceLib(faceProvider);
+                    faceLib = new FaceRecognitionDotNetFaceLib(faceProvider, key);
                     break;
                 case "ArcFace":
-                    faceLib = new ArcFaceFaceLib(faceProvider );
+                    faceLib = new ArcFaceFaceLib(faceProvider, key);
                     break;
                 case "Opencv":
-                    faceLib = new OpencvSharpFaceLib(faceProvider);
+                    faceLib = new OpencvSharpFaceLib(faceProvider, key);
                     break;
                 default:
                     throw new NotImplementedException();
@@ -69,12 +67,13 @@ namespace Face.ApplicationService.FaceService
                     throw new NotImplementedException();
             }
         }
+
         /// <summary>
         /// 人脸识别
         /// </summary>
         /// <param name="image"></param>
         /// <returns></returns>
-        public List<FaceDetectorDto> FaceDetector(Image image, out long ts)
+        public List<FaceDetectorDto> FaceDetector(System.Drawing.Image image, out long ts)
         {
             Stopwatch sw = Stopwatch.StartNew();
             var result = faceProvider.FaceDetector(image);
@@ -83,7 +82,15 @@ namespace Face.ApplicationService.FaceService
             return result;
         }
 
-        public bool FaceCompare(Image img1, Image img2, out long ts)
+        
+        public List<FaceDetectorDto> FaceDetector(SKBitmap image)
+        {
+            var result = faceProvider.FaceDetector(image);
+
+            return result;
+        }
+
+        public bool FaceCompare(System.Drawing.Image img1, System.Drawing.Image img2, out long ts)
         {
             Stopwatch sw = Stopwatch.StartNew();
             var result = faceProvider.FaceCompare(img1, img2);
@@ -91,17 +98,36 @@ namespace Face.ApplicationService.FaceService
             sw.Stop();
             return result;
         }
-        public string GetName(Image img,out long ts) {
+
+        public bool FaceCompare(SKBitmap img1, SKBitmap img2, out long ts)
+        {
+            Stopwatch sw = Stopwatch.StartNew();
+            var result = faceProvider.FaceCompare(img1, img2);
+            ts = sw.ElapsedMilliseconds;
+            sw.Stop();
+            return result;
+        }
+        public string GetName(System.Drawing.Image img,out long ts) {
             Stopwatch sw = Stopwatch.StartNew();
             var result = faceLib.Search(img);
             ts = sw.ElapsedMilliseconds;
             sw.Stop();
             return result;
         }
+        public string GetName(SKBitmap img,out long ts)
+        {
+            Stopwatch sw = Stopwatch.StartNew();
+            var result = faceLib.Search(img);
+            ts = sw.ElapsedMilliseconds;
+            sw.Stop();
+            return result;
+
+        }
 
         public void Dispose()
         {
             faceProvider.Dispose();
+
         }
     }
 }

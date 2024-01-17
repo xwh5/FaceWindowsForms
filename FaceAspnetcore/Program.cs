@@ -1,15 +1,17 @@
+using DlibDotNet.Dnn;
 using Face.ApplicationService.FaceService;
 using FaceAspnetcore.Input;
 using Microsoft.AspNetCore.Mvc;
-using SixLabors.ImageSharp;
+using SkiaSharp;
+using System.Collections.Concurrent;
 using System.Drawing;
-using Image = SixLabors.ImageSharp.Image;
-
 
 namespace FaceAspnetcore
 {
     public class Program
     {
+        public static ConcurrentDictionary<string, FaceService> serviceDic=new ConcurrentDictionary<string, FaceService>();
+        private static object lockobj = new object();
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -31,34 +33,46 @@ namespace FaceAspnetcore
 
             app.UseAuthorization();
 
+
+
             app.MapPost("/Init", ([FromBody] InitInput input) =>
             {
-                var arcsoft = new FaceService(input.Type, null,input.IsAction);
-
-                using (var img = Image.Load("wzp3.jpg"))
+                var logger = app.Services.GetRequiredService<ILogger<Program>>();
+                try
                 {
-                    // 将ImageSharp的Image<Rgba32>保存到内存流中
-                    using var memoryStream = new MemoryStream();
-                    img.SaveAsBmp(memoryStream);
+                    if (!serviceDic.TryGetValue(input.Type, out var faceService))
+                    {
+                        faceService = new FaceService(input.Type, AppDomain.CurrentDomain.BaseDirectory+ "Images", input.IsAction);
+                    }
+                    // 加载图片
+                    using var bitmap = SKBitmap.Decode("Images/wzp3.jpg");
+                    using var bitmap2 = SKBitmap.Decode("Images/wzp2.jpg");
 
-                    // 将内存流重置到起始位置
-                    memoryStream.Position = 0;
+                    var a = faceService.FaceDetector(bitmap2);
+                    var b = faceService.FaceCompare(bitmap2, bitmap, out long ts);
+                    logger.LogInformation("成功");
+                    return b;
 
-                    // 将内存流转换为字节数组
-                    byte[] imageData = memoryStream.ToArray();
 
-                    // 获取图像的宽度和高度
-                    int width = img.Width;
-                    int height = img.Height;
-
-                    // 将内存流重置到起始位置
-                    memoryStream.Position = 0;
-                    var a = arcsoft.FaceDetector(bitmap, out long ts);
-                    return a;
                 }
-              
-   
+                catch (Exception ex)
+                {
+                    logger.LogError($"异常{ex.Message},{ex.StackTrace}");
+                    return false;
 
+                }
+            });
+
+            app.MapPost("/Search", ([FromBody] InitInput input) =>
+            {
+                if (!serviceDic.TryGetValue(input.Type, out var faceService))
+                {
+                    faceService = new FaceService(input.Type, AppDomain.CurrentDomain.BaseDirectory + "Images", input.IsAction);
+                }
+                using var bitmap = SKBitmap.Decode("SourceImage/夏伟浩.jpg");
+                var b = faceService.GetName(bitmap, out long ts);
+                var result = b + "耗时：" + ts+"识别引擎："+ input.Type;
+                return result;
             });
             app.Run();
         }

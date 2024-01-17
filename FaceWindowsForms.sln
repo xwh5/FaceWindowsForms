@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Face.Sdk.ArcFace", "Face.Sd
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Face.Sdk.OpencvSharpV4", "Face.Sdk.OpencvSharpV4\Face.Sdk.OpencvSharpV4.csproj", "{A5ABF5F5-10D8-47B7-8510-5A8B09A370E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FaceAspnetcore", "FaceAspnetcore\FaceAspnetcore.csproj", "{58329634-9A7B-4ED4-AA5E-D615B4CAC9B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FaceAspnetcore", "FaceAspnetcore\FaceAspnetcore.csproj", "{58329634-9A7B-4ED4-AA5E-D615B4CAC9B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

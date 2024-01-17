@@ -108,7 +108,8 @@ namespace Face.Sdk.ArcFace.Utils
                         return img;
 
                     var stream = new MemoryStream();
-                    await image.CopyToAsync(stream);
+                    image.Reset();
+                    image.CopyTo(stream);
                     image.Reset();
                     stream.Reset();
                     return stream;

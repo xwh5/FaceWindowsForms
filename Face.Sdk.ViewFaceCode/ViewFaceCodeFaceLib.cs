@@ -8,6 +8,6 @@ namespace Face.Sdk.ViewFaceCode
 {
     public class ViewFaceCodeFaceLib: BaseFaceLib<float[]>
     {
-        public ViewFaceCodeFaceLib(IFaceProvider faceProvider) : base(faceProvider) { }
+        public ViewFaceCodeFaceLib(IFaceProvider faceProvider,string key) : base(faceProvider,key) { }
     }
 }

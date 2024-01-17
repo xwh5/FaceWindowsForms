@@ -12,5 +12,9 @@ namespace Face.ApplicationService.Share.FaceService
         List<FaceDetectorDto> FaceDetector(Image image);
         bool FaceCompare(Image img1, Image img2);
 
+        List<FaceDetectorDto> FaceDetector(SKBitmap sKBitmap);
+
+        bool FaceCompare(SKBitmap img1, SKBitmap img2);
+
     }
 }
